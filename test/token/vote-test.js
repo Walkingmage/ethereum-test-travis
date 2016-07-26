@@ -62,17 +62,17 @@ describe('Buy tokens', function() {
   });
 
   it('Bob vote yes test', function(done) {
-    var bobValue = 50000;
-    var bobTokens = Math.floor(bobValue / price);
+    // var bobValue = 50000;
+    // var bobTokens = Math.floor(bobValue / price);
     // var aliceBalance = token.balances(alice).toNumber();
-    var tokens = 25;
-    
+    // var tokens = 25;
+
     async.series([
       voteYesBob
     ], function(err) {
       if (err) return done(err);
 
-      assert(sandbox.web3.eth.getBalance(bob).eq(resultsWeightedByEther[0]), 'Bob balance is not correct');
+      assert(sandbox.web3.eth.getBalance(bob).eq(token.resultsWeightedByEther[0]), 'Bob balance is not correct');
       //assert(token.balances(alice).eq(aliceBalance + tokens), 'Alice balance is not correct');
 
       done();
