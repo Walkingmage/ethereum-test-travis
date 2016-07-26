@@ -78,20 +78,19 @@ describe('Vote Contract', function() {
       done();
     });
 
-    function voteYesBob(cb) {
-      token.voteYes({ from: bob }, function(err, txHash) {
-        if (err) return cb(err);
-        helper.waitForReceipt(sandbox.web3, txHash, cb);
-      });
-    }
-    function voteNoBob(cb) {
-      token.voteNo({ from: bob }, function(err, txHash) {
-        if (err) return cb(err);
-        helper.waitForReceipt(sandbox.web3, txHash, cb);
-      });
-    }
   });
-
+  function voteYesBob(cb) {
+    token.voteYes({ from: bob }, function(err, txHash) {
+      if (err) return cb(err);
+      helper.waitForReceipt(sandbox.web3, txHash, cb);
+    });
+  }
+  function voteNoBob(cb) {
+    token.voteNo({ from: bob }, function(err, txHash) {
+      if (err) return cb(err);
+      helper.waitForReceipt(sandbox.web3, txHash, cb);
+    });
+  }
   // it('Withdraw', function(done) {
   //   var tokensBefore = token.balances(alice).toNumber();
   //   var tokensWithdraw = 100;
