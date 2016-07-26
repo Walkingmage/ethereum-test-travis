@@ -78,22 +78,6 @@ describe('Vote Contract', function() {
       done();
     });
 
-    // function bobBuyTokens(cb) {
-    //   sandbox.web3.eth.sendTransaction({
-    //     from: bob,
-    //     to: token.address,
-    //     value: bobValue
-    //   }, function(err, txHash) {
-    //     if (err) return done(err);
-    //     helper.waitForReceipt(sandbox.web3, txHash, cb);
-    //   });
-    // }
-    // function sendTokens(cb) {
-    //   token.send(alice, tokens, { from: bob }, function(err, txHash) {
-    //     if (err) return cb(err);
-    //     helper.waitForReceipt(sandbox.web3, txHash, cb);
-    //   });
-    // }
     function voteYesBob(cb) {
       token.voteYes({ from: bob }, function(err, txHash) {
         if (err) return cb(err);
