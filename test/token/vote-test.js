@@ -85,6 +85,7 @@ describe('Vote Contract', function() {
     ], function(err) {
       if (err) return done(err);
 
+      console.log(voteContract.resultsWeightedByEther()[0]);
       assert(sandbox.web3.eth.getBalance(alice).eq(voteContract.resultsWeightedByEther()[0])/*, 'Yes votes is not correct'*/);
 
       done();
