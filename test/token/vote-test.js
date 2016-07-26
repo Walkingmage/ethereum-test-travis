@@ -79,6 +79,19 @@ describe('Vote Contract', function() {
     });
   });
 
+  it('Alice vote yes test', function(done) {
+
+    async.series([
+      voteYesAlice
+    ], function(err) {
+      if (err) return done(err);
+
+      assert(sandbox.web3.eth.getBalance(alice).eq(voteContract.resultsWeightedByEther()[0]), 'Yes votes is not correct');
+
+      done();
+    });
+  });
+
   it('Bob and Alice vote yes test', function(done) {
     // var bobValue = 50000;
     // var bobTokens = Math.floor(bobValue / price);
