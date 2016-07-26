@@ -72,8 +72,7 @@ describe('Vote Contract', function() {
     ], function(err) {
       if (err) return done(err);
 
-      assert(sandbox.web3.eth.getBalance(bob).eq(voteContract.resultsWeightedByEther()[0]), 'Yes votes is not correct');
-      //assert(voteContract.balances(alice).eq(aliceBalance + tokens), 'Alice balance is not correct');
+      assert(sandbox.web3.eth.getBalance(bob).eq(voteContract.resultsWeightedByEther()[0])/*, 'Yes votes is not correct'*/);
 
       done();
     });
@@ -86,7 +85,7 @@ describe('Vote Contract', function() {
     ], function(err) {
       if (err) return done(err);
 
-      assert(sandbox.web3.eth.getBalance(alice).eq(voteContract.resultsWeightedByEther()[0]), 'Yes votes is not correct');
+      assert(sandbox.web3.eth.getBalance(alice).eq(voteContract.resultsWeightedByEther()[0])/*, 'Yes votes is not correct'*/);
 
       done();
     });
