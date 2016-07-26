@@ -64,7 +64,7 @@ describe('Buy tokens', function() {
   it('Bob vote yes test', function(done) {
     var bobValue = 50000;
     var bobTokens = Math.floor(bobValue / price);
-    var aliceBalance = token.balances(alice).toNumber();
+    // var aliceBalance = token.balances(alice).toNumber();
     var tokens = 25;
     
     async.series([
