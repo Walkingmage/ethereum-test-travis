@@ -62,49 +62,34 @@ describe('Vote Contract', function() {
   // });
 
   it('Bob vote yes test', function(done) {
-    // var bobValue = 50000;
-    // var bobTokens = Math.floor(bobValue / price);
-    // var aliceBalance = voteContract.balances(alice).toNumber();
-    // var tokens = 25;
 
     async.series([
       voteYesBob
     ], function(err) {
       if (err) return done(err);
 
-      assert(sandbox.web3.eth.getBalance(bob).eq(voteContract.resultsWeightedByEther()[0])/*, 'Yes votes is not correct'*/);
+      assert.equal(sandbox.web3.eth.getBalance(bob), (voteContract.resultsWeightedByEther()[0]), 'Yes votes is not correct');
 
       done();
     });
   });
 
-  it('Alice vote yes test', function(done) {
 
-    async.series([
-      voteYesAlice
-    ], function(err) {
-      if (err) return done(err);
-
-      console.log(voteContract.resultsWeightedByEther()[0]);
-      assert(sandbox.web3.eth.getBalance(alice).eq(voteContract.resultsWeightedByEther()[0])/*, 'Yes votes is not correct'*/);
-
-      done();
-    });
-  });
 
   it('Bob and Alice vote yes test', function(done) {
-    // var bobValue = 50000;
-    // var bobTokens = Math.floor(bobValue / price);
-    // var aliceBalance = voteContract.balances(alice).toNumber();
-    // var tokens = 25;
 
     async.series([
       voteYesBob ,
-      voteYesAlice
+      removeVoteBob
     ], function(err) {
       if (err) return done(err);
       // zero = 0;
-      assert.equal(voteContract.resultsWeightedByEther()[0], (sandbox.web3.eth.getBalance(bob)+sandbox.web3.eth.getBalance(alice))/*, 'Yes votes is not correct'*/);
+      // assert.equal(3, '3', '== coerces values to strings');
+      assert.equal(voteContract.resultsWeightedByEther()[0]), 0);
+      assert.notEqual(voteContract.resultsWeightedByEther()[0], (sandbox.web3.eth.getBalance(bob)));
+      // assert(voteContract.resultsWeightedByEther()[0].eq(sandbox.web3.eth.getBalance(bob)+sandbox.web3.eth.getBalance(alice)), 'Yes votes is not correct');
+      // assert(voteContract.resultsWeightedByEther()[0].eq(sandbox.web3.eth.getBalance(bob)+sandbox.web3.eth.getBalance(bob)), 'Yes votes is not correct');
+      // assert(voteContract.resultsWeightedByEther()[1].eq(0), 'No votes is not correct');
       //assert(voteContract.balances(alice).eq(aliceBalance + tokens), 'Alice balance is not correct');
 
       done();
@@ -127,19 +112,15 @@ describe('Vote Contract', function() {
     });
   }
 
-    function voteYesAlice(cb) {
-      voteContract.voteYes({ from: alice }, function(err, txHash) {
-        if (err) return cb(err);
-        helper.waitForReceipt(sandbox.web3, txHash, cb);
-      });
-    }
 
-    function voteNoAlice(cb) {
-      voteContract.voteNo({ from: alice }, function(err, txHash) {
-        if (err) return cb(err);
-        helper.waitForReceipt(sandbox.web3, txHash, cb);
-      });
-    }
+  function removeVoteBob(cb) {
+    voteContract.removeVote({ from: bob }, function(err, txHash) {
+      if (err) return cb(err);
+      helper.waitForReceipt(sandbox.web3, txHash, cb);
+    });
+  }
+
+
 
   // it('Withdraw', function(done) {
   //   var tokensBefore = voteContract.balances(alice).toNumber();
