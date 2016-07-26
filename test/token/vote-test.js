@@ -85,7 +85,7 @@ describe('Vote Contract', function() {
       if (err) return done(err);
       // zero = 0;
       // assert.equal(3, '3', '== coerces values to strings');
-      assert.equal(voteContract.resultsWeightedByEther()[0]), 0);
+      assert.equal(voteContract.resultsWeightedByEther()[0], 0);
       assert.notEqual(voteContract.resultsWeightedByEther()[0], (sandbox.web3.eth.getBalance(bob)));
       // assert(voteContract.resultsWeightedByEther()[0].eq(sandbox.web3.eth.getBalance(bob)+sandbox.web3.eth.getBalance(alice)), 'Yes votes is not correct');
       // assert(voteContract.resultsWeightedByEther()[0].eq(sandbox.web3.eth.getBalance(bob)+sandbox.web3.eth.getBalance(bob)), 'Yes votes is not correct');
