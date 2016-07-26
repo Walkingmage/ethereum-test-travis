@@ -38,10 +38,10 @@ describe('Vote Contract', function() {
   //   var value = 100111;
   //   var balanceBefore = sandbox.web3.eth.getBalance(alice);
   //
-  //   assert(token.balances(alice).eq(0), 'Alice balance is not zero');
+  //   assert(voteContract.balances(alice).eq(0), 'Alice balance is not zero');
   //   sandbox.web3.eth.sendTransaction({
   //     from: alice,
-  //     to: token.address,
+  //     to: voteContract.address,
   //     value: value
   //   }, function(err, txHash) {
   //     if (err) return done(err);
@@ -49,7 +49,7 @@ describe('Vote Contract', function() {
   //       if (err) return done(err);
   //
   //       var tokens = Math.floor(value / price);
-  //       assert(token.balances(alice).eq(tokens), 'Account has not get ' + tokens + ' tokens');
+  //       assert(voteContract.balances(alice).eq(tokens), 'Account has not get ' + tokens + ' tokens');
   //
   //       var txCost = sandbox.web3.eth.gasPrice.mul(receipt.gasUsed);
   //       var spent = tokens * price;
@@ -64,7 +64,7 @@ describe('Vote Contract', function() {
   it('Bob vote yes test', function(done) {
     // var bobValue = 50000;
     // var bobTokens = Math.floor(bobValue / price);
-    // var aliceBalance = token.balances(alice).toNumber();
+    // var aliceBalance = voteContract.balances(alice).toNumber();
     // var tokens = 25;
 
     async.series([
@@ -72,36 +72,36 @@ describe('Vote Contract', function() {
     ], function(err) {
       if (err) return done(err);
 
-      assert(sandbox.web3.eth.getBalance(bob).eq(token.resultsWeightedByEther()[0]), 'Bob balance is not correct');
-      //assert(token.balances(alice).eq(aliceBalance + tokens), 'Alice balance is not correct');
+      assert(sandbox.web3.eth.getBalance(bob).eq(voteContract.resultsWeightedByEther()[0]), 'Yes votes is not correct');
+      //assert(voteContract.balances(alice).eq(aliceBalance + tokens), 'Alice balance is not correct');
 
       done();
     });
 
   });
   function voteYesBob(cb) {
-    token.voteYes({ from: bob }, function(err, txHash) {
+    voteContract.voteYes({ from: bob }, function(err, txHash) {
       if (err) return cb(err);
       helper.waitForReceipt(sandbox.web3, txHash, cb);
     });
   }
   function voteNoBob(cb) {
-    token.voteNo({ from: bob }, function(err, txHash) {
+    voteContract.voteNo({ from: bob }, function(err, txHash) {
       if (err) return cb(err);
       helper.waitForReceipt(sandbox.web3, txHash, cb);
     });
   }
   // it('Withdraw', function(done) {
-  //   var tokensBefore = token.balances(alice).toNumber();
+  //   var tokensBefore = voteContract.balances(alice).toNumber();
   //   var tokensWithdraw = 100;
   //   var balanceBefore = sandbox.web3.eth.getBalance(alice);
   //
-  //   token.withdraw(tokensWithdraw, { from: alice }, function(err, txHash) {
+  //   voteContract.withdraw(tokensWithdraw, { from: alice }, function(err, txHash) {
   //     if (err) return done(err);
   //     helper.waitForReceipt(sandbox.web3, txHash, function(err, receipt) {
   //       if (err) return done(err);
   //
-  //       assert(token.balances(alice).eq(tokensBefore - tokensWithdraw), 'Alice tokens balance is not correct');
+  //       assert(voteContract.balances(alice).eq(tokensBefore - tokensWithdraw), 'Alice tokens balance is not correct');
   //
   //       var txCost = sandbox.web3.eth.gasPrice.mul(receipt.gasUsed);
   //       var expectedBalance = balanceBefore.sub(txCost).add(tokensWithdraw * price);
