@@ -68,7 +68,8 @@ describe('Vote Contract', function() {
     ], function(err) {
       if (err) return done(err);
 
-      assert.equal(sandbox.web3.eth.getBalance(bob), (voteContract.resultsWeightedByEther()[0]), 'Yes votes is not correct');
+      assert(sandbox.web3.eth.getBalance(bob).eq(voteContract.resultsWeightedByEther()[0])/*, 'Yes votes is not correct'*/);
+      //assert.equal(sandbox.web3.eth.getBalance(bob), (voteContract.resultsWeightedByEther()[0]), 'Yes votes is not correct');
 
       done();
     });
