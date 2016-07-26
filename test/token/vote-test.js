@@ -5,19 +5,19 @@ var helper = require('ethereum-sandbox-helper');
 
 describe('Vote Contract', function() {
   this.timeout(60000);
-  
+
   var alice = '0xcd2a3d9f938e13cd947ec05abc7fe734df8dd826';
   var bob = '0xdedb49385ad5b94a16f236a6890cf9e0b1e30392';
   var price = 1000;
   var sandbox = new Sandbox('http://localhost:8554');
   var compiled = helper.compile('contracts', ['vote.sol']);
-  var token;
-  
+  var voteContract;
+
   before(function(done) {
     sandbox.start(__dirname + '/ethereum.json', done);
   });
-  
-  it('Deploy Token contract', function(done) {
+
+  it('Deploy Vote contract', function(done) {
     sandbox.web3.eth.contract(JSON.parse(compiled.contracts['Vote'].interface)).new(
       "Test question?",
       {
@@ -27,7 +27,7 @@ describe('Vote Contract', function() {
       function(err, contract) {
         if (err) done(err);
         else if (contract.address) {
-          token = contract;
+          voteContract = contract;
           done();
         }
       }
