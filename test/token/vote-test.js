@@ -77,20 +77,58 @@ describe('Vote Contract', function() {
 
       done();
     });
-
   });
+
+  it('Bob and Alice vote yes test', function(done) {
+    // var bobValue = 50000;
+    // var bobTokens = Math.floor(bobValue / price);
+    // var aliceBalance = voteContract.balances(alice).toNumber();
+    // var tokens = 25;
+
+    async.series([
+      voteYesBob ,
+      voteYesAlice
+    ], function(err) {
+      if (err) return done(err);
+      zero = 0;
+      assert((sandbox.web3.eth.getBalance(bob)+sandbox.web3.eth.getBalance(bob)).eq(voteContract.resultsWeightedByEther()[0]), 'Yes votes is not correct');
+      assert(zero.eq(voteContract.resultsWeightedByEther()[1]), 'No votes is not correct');
+      //assert(voteContract.balances(alice).eq(aliceBalance + tokens), 'Alice balance is not correct');
+
+      done();
+    });
+  });
+
+
+
   function voteYesBob(cb) {
     voteContract.voteYes({ from: bob }, function(err, txHash) {
       if (err) return cb(err);
       helper.waitForReceipt(sandbox.web3, txHash, cb);
     });
   }
+
   function voteNoBob(cb) {
     voteContract.voteNo({ from: bob }, function(err, txHash) {
       if (err) return cb(err);
       helper.waitForReceipt(sandbox.web3, txHash, cb);
     });
   }
+
+    function voteYesAlice(cb) {
+      voteContract.voteYes({ from: alice }, function(err, txHash) {
+        if (err) return cb(err);
+        helper.waitForReceipt(sandbox.web3, txHash, cb);
+      });
+    }
+
+    function voteNoAlice(cb) {
+      voteContract.voteNo({ from: alice }, function(err, txHash) {
+        if (err) return cb(err);
+        helper.waitForReceipt(sandbox.web3, txHash, cb);
+      });
+    }
+
   // it('Withdraw', function(done) {
   //   var tokensBefore = voteContract.balances(alice).toNumber();
   //   var tokensWithdraw = 100;
