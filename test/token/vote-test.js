@@ -77,7 +77,7 @@ describe('Vote Contract', function() {
 
 
 
-  it('Bob and Alice vote yes test', function(done) {
+  it('Bob vote yes and remove vote', function(done) {
 
     async.series([
       voteYesBob ,
