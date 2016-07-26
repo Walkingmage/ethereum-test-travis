@@ -10,7 +10,7 @@ describe('Buy tokens', function() {
   var bob = '0xdedb49385ad5b94a16f236a6890cf9e0b1e30392';
   var price = 1000;
   var sandbox = new Sandbox('http://localhost:8554');
-  var compiled = helper.compile('contracts', ['token.sol']);
+  var compiled = helper.compile('contracts', ['vote.sol']);
   var token;
   
   before(function(done) {
@@ -18,11 +18,11 @@ describe('Buy tokens', function() {
   });
   
   it('Deploy Token contract', function(done) {
-    sandbox.web3.eth.contract(JSON.parse(compiled.contracts['Token'].interface)).new(
-      price,
+    sandbox.web3.eth.contract(JSON.parse(compiled.contracts['Vote'].interface)).new(
+      "Test question?",
       {
         from: alice,
-        data: '0x' + compiled.contracts['Token'].bytecode
+        data: '0x' + compiled.contracts['Vote'].bytecode
       },
       function(err, contract) {
         if (err) done(err);
@@ -60,37 +60,48 @@ describe('Buy tokens', function() {
       });
     });
   });
-  
-  it('Send tokens', function(done) {
+
+  it('Bob vote yes test', function(done) {
     var bobValue = 50000;
     var bobTokens = Math.floor(bobValue / price);
     var aliceBalance = token.balances(alice).toNumber();
     var tokens = 25;
     
     async.series([
-      bobBuyTokens,
-      sendTokens
+      voteYesBob
     ], function(err) {
       if (err) return done(err);
-      
-      assert(token.balances(bob).eq(bobTokens - tokens), 'Bob balance is not correct');
-      assert(token.balances(alice).eq(aliceBalance + tokens), 'Alice balance is not correct');
-      
+
+      assert(token.balances(bob).eq(resultsWeightedByEther[0]), 'Bob balance is not correct');
+      //assert(token.balances(alice).eq(aliceBalance + tokens), 'Alice balance is not correct');
+
       done();
     });
-    
-    function bobBuyTokens(cb) {
-      sandbox.web3.eth.sendTransaction({
-        from: bob,
-        to: token.address,
-        value: bobValue
-      }, function(err, txHash) {
-        if (err) return done(err);
+
+    // function bobBuyTokens(cb) {
+    //   sandbox.web3.eth.sendTransaction({
+    //     from: bob,
+    //     to: token.address,
+    //     value: bobValue
+    //   }, function(err, txHash) {
+    //     if (err) return done(err);
+    //     helper.waitForReceipt(sandbox.web3, txHash, cb);
+    //   });
+    // }
+    // function sendTokens(cb) {
+    //   token.send(alice, tokens, { from: bob }, function(err, txHash) {
+    //     if (err) return cb(err);
+    //     helper.waitForReceipt(sandbox.web3, txHash, cb);
+    //   });
+    // }
+    function voteYesBob(cb) {
+      token.voteYes({ from: bob }, function(err, txHash) {
+        if (err) return cb(err);
         helper.waitForReceipt(sandbox.web3, txHash, cb);
       });
     }
-    function sendTokens(cb) {
-      token.send(alice, tokens, { from: bob }, function(err, txHash) {
+    function voteNoBob(cb) {
+      token.voteNo({ from: bob }, function(err, txHash) {
         if (err) return cb(err);
         helper.waitForReceipt(sandbox.web3, txHash, cb);
       });
